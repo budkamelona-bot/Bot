@@ -34,10 +34,6 @@ def build_check_router(
         if subscriber is None:
             return
 
-        if subscriber.welcome_sent_at is None:
-            await messaging_service.send_welcome_random_message(subscriber)
-            return
-
-        await message.answer("Подписка подтверждена ✅ Ежедневные сообщения уже активны.")
+        await messaging_service.send_welcome_message(subscriber)
 
     return router

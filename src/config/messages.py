@@ -1,115 +1,150 @@
 from pathlib import Path
+from urllib.parse import urlparse
 
+PROJECT_DIR = Path(__file__).resolve().parents[2]
 ASSETS_DIR = Path(__file__).resolve().parents[1] / "assets"
 
-TG_EYE = '<tg-emoji emoji-id="6251187387360085896">👁️</tg-emoji>'
-TG_FIRE = '<tg-emoji emoji-id="5440848567524677660">🔥</tg-emoji>'
-TG_FISHING = '<tg-emoji emoji-id="5188322825735267247">🎣</tg-emoji>'
-TG_CAR = '<tg-emoji emoji-id="5190458184690588640">🏎️</tg-emoji>'
-TG_GIFT = '<tg-emoji emoji-id="5242716091163101659">🎁</tg-emoji>'
-TG_HUNDRED = '<tg-emoji emoji-id="5341498088408234504">💯</tg-emoji>'
-TG_ICE = '<tg-emoji emoji-id="5334544901428229844">🧊</tg-emoji>'
-TG_ROCKET = '<tg-emoji emoji-id="5188481279963715781">🚀</tg-emoji>'
+SOURCE_TIKTOK = "tiktok"
+SOURCE_YOUTUBE = "youtube"
+
+TIKTOK_INVITE_LINK = "https://t.me/+QvKrFcrm3Ow0YjY6"
+YOUTUBE_INVITE_LINK = "https://t.me/+_wPQMCnnhrA1Y2Uy"
+UPCLICK_URL = "https://upclick.site/tzxlvrpmi"
+SPINTO_URL = "https://megaslotsmatch.com/l/6a4ec0d6dda4f5282f0d2cb2"
+
+TG_PURPLE_HEART = '<tg-emoji emoji-id="5402366352042252021">💜</tg-emoji>'
+TG_CHECK = '<tg-emoji emoji-id="5337160532216526521">✅</tg-emoji>'
+TG_NEW = '<tg-emoji emoji-id="5458526506886124915">🆕</tg-emoji>'
+TG_BROWN = '<tg-emoji emoji-id="5458430926683905591">🟫</tg-emoji>'
+TG_MONEY = '<tg-emoji emoji-id="5391292736647209211">💸</tg-emoji>'
+TG_GIFT = '<tg-emoji emoji-id="5203996991054432397">🎁</tg-emoji>'
 TG_LIGHTNING = '<tg-emoji emoji-id="5456140674028019486">⚡</tg-emoji>'
-TG_MONEY = '<tg-emoji emoji-id="5316709465616031741">💸</tg-emoji>'
-TG_TARGET = '<tg-emoji emoji-id="5213297669719491128">🎯</tg-emoji>'
-TG_ARROW = '<tg-emoji emoji-id="5416117059207572332">➤</tg-emoji>'
-TG_WHEEL = '<tg-emoji emoji-id="5213149166930267840">🎡</tg-emoji>'
-TG_LINK = '<tg-emoji emoji-id="5460795821576443427">🔗</tg-emoji>'
-TG_ONE = '<tg-emoji emoji-id="5440377203453885642">1️⃣</tg-emoji>'
-TG_TWO = '<tg-emoji emoji-id="5438538369040678177">2️⃣</tg-emoji>'
-TG_THREE = '<tg-emoji emoji-id="5440601121573861927">3️⃣</tg-emoji>'
-TG_DOWN = '<tg-emoji emoji-id="5231102735817918643">👇</tg-emoji>'
+TG_UPX = '<tg-emoji emoji-id="5377366193520781414">UP-X</tg-emoji>'
+TG_SEPARATOR = '<tg-emoji emoji-id="5416117059207572332">:</tg-emoji>'
+UPX_LINK_PREFIX = "UP-X:"
 
-BOT_PLAY_URL = "https://t.me/jet_slotmania_bot?start=cfrWd8oo4au"
-SITE_PLAY_URL = "https://jetton.direct/cfrWd8oo4au?click_id=%7Bclick_id%7D"
-PLAY_BUTTONS = [
-    {"text": "Играть в боте", "url": BOT_PLAY_URL},
-    {"text": "Играть на сайте", "url": SITE_PLAY_URL},
-]
-
-RANDOM_MESSAGES = [
-    {
-        "image_path": str(ASSETS_DIR / "random_message_1.jpg"),
-        "caption": f"""
-{TG_FIRE}<b>ТУРБИНА УДАЧИ ДЛЯ НОВЫХ ИГРОКОВ</b>{TG_ROCKET}
-
-{TG_ARROW} <b>Регистрируйся</b> и заходи с промо
-{TG_GIFT} <b>Крути колесо</b> — забирай до <b>80 000₽</b> на баланс
-{TG_HUNDRED} <b>Бонус:</b> <b>250 FS + 425%</b> к депозиту
-
-{TG_LIGHTNING}<b>Время ограничено</b> — активируй бонус прямо сейчас
-""".strip(),
-        "buttons": PLAY_BUTTONS,
-    },
-    {
-        "image_path": str(ASSETS_DIR / "random_message_2.jpg"),
-        "caption": f"""
-{TG_MONEY}<b>ТЫ ПОЛУЧИЛ БОНУС ДЛЯ СТАРТА</b>
-
-{TG_TARGET} <b>425% + 250 FS</b> новым игрокам
-{TG_WHEEL} <b>Без депа</b> — крути колесо после регистрации
-{TG_FIRE} <b>Доп. бонусы</b> и акции доступны сразу после входа
-
-{TG_DOWN} Нажимай кнопку ниже и активируй предложение
-""".strip(),
-        "buttons": PLAY_BUTTONS,
-    },
-    {
-        "image_path": str(ASSETS_DIR / "random_message_3.jpg"),
-        "caption": f"""
-{TG_GIFT}<b>ЗАБЕРИ СВОЙ БОНУС ПРЯМО СЕЙЧАС</b>
-
-{TG_ONE} <b>Зарегистрируйся</b> по ссылке ниже
-{TG_TWO} <b>Крути турбину</b> и забирай до <b>80 000₽</b>
-{TG_THREE} <b>Пополняй баланс</b> и получай <b>250 FS + 425%</b>
-
-{TG_LINK} <b>Промо уже активно</b> — не пропусти
-""".strip(),
-        "buttons": PLAY_BUTTONS,
-    },
-    {
-        "image_path": str(ASSETS_DIR / "random_message_4.jpg"),
-        "caption": f"""
-{TG_EYE}<b>ВСЕ ИГРЫ ИЗ ВИДЕО ТУТ</b>{TG_EYE}
-
-{TG_FIRE} <b>MINESLOT 2</b> — <a href="https://clck.ru/3QbX4Q">ИГРАТЬ</a>
-{TG_CAR} <b>RUSH HOUR</b> — <a href="https://clck.ru/3QbX4Q">ИГРАТЬ</a>
-{TG_FISHING} <b>ICE FISHING</b> — <a href="https://clck.ru/3QbX4Q">ИГРАТЬ</a>
-
-{TG_GIFT} <b>Бонус:</b> до <b>80 000₽</b> на баланс
-{TG_HUNDRED} <b>Депозит:</b> <b>250 FS + 425%</b>
-""".strip(),
-        "buttons": PLAY_BUTTONS,
-    },
-]
-
-JOIN_REQUEST_MESSAGE = {
+DEFAULT_WELCOME_MESSAGE = {
     "image_path": str(ASSETS_DIR / "random_message_1.jpg"),
-    "caption": f"""
-{TG_EYE}<b>ВСЕ ИГРЫ ИЗ ВИДЕО ТУТ</b>{TG_EYE}
+    "caption": """
+<b>ВСЕ ИГРЫ ИЗ ВИДЕО ТУТ</b>
 
-{TG_FIRE}MINESLOT 2 (NEW) — <a href="https://clck.ru/3QbX4Q">ИГРАТЬ</a>
-{TG_CAR}RUSH HOUR (МАШИНЫ) — <a href="https://clck.ru/3QbX4Q">ИГРАТЬ</a>
-{TG_FISHING}ICE FISHING(РЫБАЛКА) — <a href="https://clck.ru/3QbX4Q">ИГРАТЬ</a>
+🔥 MINESLOT 2 (NEW) — <a href="https://clck.ru/3QbX4Q">ИГРАТЬ</a>
+🏎️ RUSH HOUR (МАШИНЫ) — <a href="https://clck.ru/3QbX4Q">ИГРАТЬ</a>
+🎣 ICE FISHING (РЫБАЛКА) — <a href="https://clck.ru/3QbX4Q">ИГРАТЬ</a>
 
-{TG_GIFT}<i>КРУТИ КОЛЕСО И ЗАБИРАЙ ДО 80.000₽ НА БАЛАНС К ДЕПОЗИТУ:</i>
+{TG_GIFT} <i>КРУТИ КОЛЕСО И ЗАБИРАЙ ДО 80.000₽ НА БАЛАНС К ДЕПОЗИТУ:</i>
 
-{TG_HUNDRED}Вноси депозит и получай бонус: <b><u>250FS + 425% к пополнениям</u></b> {TG_ICE}
+💯 Вноси депозит и получай бонус: <b><u>250FS + 425% к пополнениям</u></b> 🧊
 """.strip(),
-    "buttons": PLAY_BUTTONS,
 }
 
-FIXED_MESSAGE_IMAGE_PATH = str(ASSETS_DIR / "fixed_message.jpg")
+TIKTOK_WELCOME_MESSAGE = {
+    "image_path": str(PROJECT_DIR / "tiktok.jpg"),
+    "caption": f"""
+<b>ТА САМАЯ ИГРА ИЗ ТИК ТОКА — МАЙНКРАФТ</b> {TG_BROWN}
 
-FIXED_MESSAGE = f"""
-{TG_FIRE}<b>ПОДПИСЫВАЙСЯ НА МОЙ ТЕЛЕГРАММ</b>
+В этой игре тебе предстоит прокачивать свою кирку, чтобы собрать как можно больше кеша! {TG_MONEY}
 
-<i>Регулярные конкурсы и розыгрыши бонусов</i>
-<i>Индивидуальные мемы для тгк</i>
-<i>Топовое комьюнити - уважаем друг друга</i>
+{TG_GIFT} <b>100FS в Le Bandit ЗА ПЕРВЫЙ ДЕПОЗИТ</b> {TG_LIGHTNING}
 
-{TG_LINK} https://t.me/budkamelona
-{TG_LINK} https://t.me/budkamelona
-{TG_LINK} https://t.me/budkamelona
-""".strip()
+📝 <b>Условия:</b>
+🎰 Ставка: <b>40 RUB</b>
+💰 Депозит: <b>от 1000 RUB</b>
+🍀 Вейджер: <b>x3</b>
+
+👇 <b>НИЖЕ ССЫЛКА ГДЕ МОЖНО ПОИГРАТЬ</b> 👇
+{UPX_LINK_PREFIX} <a href="{UPCLICK_URL}">{UPCLICK_URL}</a>
+{UPX_LINK_PREFIX} <a href="{UPCLICK_URL}">{UPCLICK_URL}</a>
+""".strip(),
+}
+
+YOUTUBE_WELCOME_MESSAGE = {
+    "image_path": str(PROJECT_DIR / "youtube.jpg"),
+    "caption": f"""
+{TG_PURPLE_HEART} <b>ПРЯМО СЕЙЧАС ЗАБИРАЙ 500 БЕСПЛАТНЫХ ВРАЩЕНИЙ И 425% ЗА РЕГИСТРАЦИЮ НА ПЕРВЫЙ ДЕПОЗИТ ОТ 500 РУБЛЕЙ!</b> 🔥
+
+Делай минимальный депозит
+и забирай бонус от меня!
+
+{TG_CHECK} Бонус новичкам <b>+425%</b> к депу и <b>500FS</b>
+{TG_CHECK} моментальные выводы
+{TG_CHECK} кешбек <b>10%</b> каждый четверг
+{TG_CHECK} Турниры и розыгрыши
+
+<b>ССЫЛКА ДЛЯ РЕГИСТРАЦИИ</b>
+
+{TG_NEW} {TG_PURPLE_HEART}SPINTO — <a href="{SPINTO_URL}">{SPINTO_URL}</a>
+{TG_NEW} {TG_PURPLE_HEART}SPINTO — <a href="{SPINTO_URL}">{SPINTO_URL}</a>
+{TG_NEW} {TG_PURPLE_HEART}SPINTO — <a href="{SPINTO_URL}">{SPINTO_URL}</a>
+""".strip(),
+}
+
+WELCOME_MESSAGES_BY_SOURCE = {
+    SOURCE_TIKTOK: TIKTOK_WELCOME_MESSAGE,
+    SOURCE_YOUTUBE: YOUTUBE_WELCOME_MESSAGE,
+}
+
+INVITE_HASH_TO_SOURCE = {
+    "QvKrFcrm3Ow0YjY6": SOURCE_TIKTOK,
+    "_wPQMCnnhrA1Y2Uy": SOURCE_YOUTUBE,
+}
+
+INVITE_LINK_MARKERS = {
+    "+QvKrFcrm3Ow0YjY6": SOURCE_TIKTOK,
+    "QvKrFcrm": SOURCE_TIKTOK,
+    "+_wPQMCnnhrA1Y2Uy": SOURCE_YOUTUBE,
+    "_wPQMCnn": SOURCE_YOUTUBE,
+}
+
+
+def normalize_invite_link(invite_link: str | None) -> str | None:
+    if invite_link is None:
+        return None
+    return invite_link.strip().rstrip("/")
+
+
+def extract_invite_hash(invite_link: str | None) -> str | None:
+    normalized_link = normalize_invite_link(invite_link)
+    if normalized_link is None:
+        return None
+
+    parsed = urlparse(normalized_link)
+    path = parsed.path.strip("/")
+    if path.startswith("+"):
+        return path[1:]
+    return path or None
+
+
+def resolve_welcome_source(invite_link: str | None = None, invite_link_name: str | None = None) -> str | None:
+    if invite_link_name:
+        name = invite_link_name.strip().lower()
+        if "tiktok" in name:
+            return SOURCE_TIKTOK
+        if "youtube" in name:
+            return SOURCE_YOUTUBE
+
+    normalized_link = normalize_invite_link(invite_link)
+    if normalized_link:
+        for marker, source in INVITE_LINK_MARKERS.items():
+            if marker in normalized_link:
+                return source
+
+    invite_hash = extract_invite_hash(invite_link)
+    if invite_hash is None:
+        return None
+
+    direct_match = INVITE_HASH_TO_SOURCE.get(invite_hash)
+    if direct_match is not None:
+        return direct_match
+
+    for known_hash, source in INVITE_HASH_TO_SOURCE.items():
+        if invite_hash.startswith(known_hash) or known_hash.startswith(invite_hash):
+            return source
+
+    return None
+
+
+def get_welcome_message(source: str | None = None) -> dict:
+    if source is None:
+        return DEFAULT_WELCOME_MESSAGE
+    return WELCOME_MESSAGES_BY_SOURCE.get(source, DEFAULT_WELCOME_MESSAGE)

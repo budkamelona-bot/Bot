@@ -1,6 +1,6 @@
 .git
 .gitignore
-.venv
+.venv*
 __pycache__
 *.pyc
 *.pyo
@@ -8,3 +8,6 @@ __pycache__
 .DS_Store
 .idea
 .env
+.env.*
+!.env.example
+README.md

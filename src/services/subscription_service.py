@@ -25,12 +25,14 @@ class SubscriptionService:
         chat_id: int,
         username: str | None,
         first_name: str | None,
+        welcome_source: str | None = None,
     ) -> Subscriber:
         return await self.subscriber_repository.upsert_user(
             user_id=user_id,
             chat_id=chat_id,
             username=username,
             first_name=first_name,
+            welcome_source=welcome_source,
         )
 
     async def activate_subscription(self, user_id: int) -> None:

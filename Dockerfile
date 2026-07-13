@@ -2,18 +2,19 @@ FROM python:3.11-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+ENV PIP_DISABLE_PIP_VERSION_CHECK=1
 
 WORKDIR /app
-
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends build-essential libpq-dev \
-    && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY src ./src
-COPY sql ./sql
-COPY README.md .
+RUN useradd --create-home --uid 10001 bot
+
+COPY --chown=bot:bot src ./src
+COPY --chown=bot:bot sql ./sql
+COPY --chown=bot:bot tiktok.jpg youtube.jpg ./
+
+USER bot
 
 CMD ["python", "-m", "src.main"]

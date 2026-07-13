@@ -1,6 +1,9 @@
+import asyncio
+
 from aiogram import Router
 from aiogram.types import ChatMemberUpdated
 
+from src.config.messages import resolve_welcome_source
 from src.config.settings import settings
 from src.services.messaging_service import MessagingService
 from src.services.subscription_service import SubscriptionService
@@ -27,6 +30,10 @@ def build_chat_member_router(
 
         was_active = is_active_member_status(old_status)
         is_active = is_active_member_status(new_status)
+        invite_link = event.invite_link.invite_link if event.invite_link is not None else None
+        invite_link_name = event.invite_link.name if event.invite_link is not None else None
+        welcome_source = resolve_welcome_source(invite_link=invite_link, invite_link_name=invite_link_name)
+        via_join_request = bool(event.via_join_request)
 
         if not was_active and is_active:
             existing_subscriber = await subscription_service.find_by_user_id(user.id)
@@ -37,14 +44,35 @@ def build_chat_member_router(
                 chat_id=chat_id,
                 username=user.username,
                 first_name=user.first_name,
+                welcome_source=welcome_source,
             )
             await subscription_service.activate_subscription(user.id)
 
             subscriber = await subscription_service.find_by_user_id(user.id)
-            if subscriber is not None:
-                await messaging_service.send_welcome_random_message(subscriber)
+            should_send_welcome = subscriber is not None and (
+                not via_join_request or subscriber.welcome_sent_at is None
+            )
+            sent = False
+            if subscriber is not None and should_send_welcome:
+                sent = await messaging_service.send_welcome_message(subscriber, welcome_source=welcome_source)
+                if not sent and via_join_request:
+                    await asyncio.sleep(0.5)
+                    refreshed_subscriber = await subscription_service.find_by_user_id(user.id)
+                    if refreshed_subscriber is not None and refreshed_subscriber.welcome_sent_at is None:
+                        sent = await messaging_service.send_welcome_message(
+                            refreshed_subscriber,
+                            welcome_source=welcome_source,
+                        )
 
-            logger.info("Channel subscription detected via chat_member for user_id=%s", user.id)
+            logger.info(
+                "Channel subscription detected via chat_member for user_id=%s invite_link=%s welcome_source=%s via_join_request=%s should_send_welcome=%s sent=%s",
+                user.id,
+                invite_link,
+                welcome_source,
+                via_join_request,
+                should_send_welcome,
+                sent,
+            )
             return
 
         if was_active and not is_active:

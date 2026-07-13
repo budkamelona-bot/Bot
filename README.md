@@ -4,11 +4,8 @@ Python-версия Telegram-бота для канала.
 
 ## Что делает бот
 
-- при join request отправляет отдельное welcome-сообщение
-- затем отправляет одно случайное сообщение из 4 каждые 5 часов
-- один раз в день отправляет фиксированное сообщение в 20:00 по Москве
+- при подтверждении подписки отправляет одно welcome-сообщение
 - защищается от дублей
-- останавливает ежедневные отправки после отписки
 - помнит блокировку бота пользователем
 
 ## Рекомендуемый Telegram-сценарий
@@ -32,7 +29,6 @@ Fallback-сценарий тоже есть:
 - Python 3.11+
 - aiogram
 - asyncpg
-- APScheduler
 - PostgreSQL
 
 ## Структура проекта
@@ -61,15 +57,12 @@ telegram-channel-bot-python/
    ├─ repositories/
    │  └─ subscriber_repository.py
    ├─ services/
-   │  ├─ message_picker.py
    │  ├─ messaging_service.py
    │  ├─ subscription_service.py
-   │  └─ scheduler_service.py
    ├─ types/
    │  └─ subscriber.py
    └─ utils/
       ├─ logger.py
-      ├─ time_utils.py
       └─ telegram_utils.py
 ```
 
@@ -102,47 +95,58 @@ psql "$DATABASE_URL" -f sql/001_init.sql
 python -m src.main
 ```
 
-## Деплой
+## Деплой на Railway
 
-Самый простой вариант для такого бота — Railway: там удобно поднять и сам Python-процесс, и PostgreSQL рядом.
+Проект готов к запуску как постоянный worker-процесс:
 
-Что уже подготовлено в проекте:
+- Railway автоматически использует корневой `Dockerfile`
+- `railway.json` задаёт команду запуска и перезапуск после сбоя
+- при старте бот ждёт PostgreSQL и сам применяет `sql/001_init.sql`
+- публичный домен и HTTP-порт этому боту не нужны
 
-- `Dockerfile` для запуска бота как long-running worker
-- `.dockerignore`
-- `.env.example`
+### 1. Отправьте проект в GitHub
 
-### Вариант: Railway
+Не добавляйте локальный `.env` в репозиторий. Все секреты задаются в Railway.
 
-1. Залейте проект в GitHub.
-2. В Railway создайте проект и подключите репозиторий.
-3. Добавьте в проект PostgreSQL.
-4. Railway автоматически подхватит `Dockerfile`.
-5. В Variables задайте:
-   - `BOT_TOKEN`
-   - `DATABASE_URL`
-   - `CHANNEL_ID`
-   - `CHANNEL_LINK`
-   - `TELEGRAM_BOT_USERNAME`
-   - `TIME_ZONE`
-   - `SCHEDULER_TICK_CRON`
-   - `RANDOM_SEND_INTERVAL_HOURS`
-   - `FIXED_SEND_TIME`
-   - `LOG_LEVEL`
-6. После первого запуска примените SQL из `sql/001_init.sql` к базе Railway.
+```bash
+git add .
+git commit -m "Prepare bot for Railway deployment"
+git push
+```
 
-Для продакшна рекомендую вернуть обычный режим:
+### 2. Создайте проект и PostgreSQL
 
-- `SCHEDULER_TICK_CRON=*/5 * * * *`
-- `TIME_ZONE=Europe/Moscow`
-- `RANDOM_SEND_INTERVAL_HOURS=5`
-- `FIXED_SEND_TIME=20:00`
+1. В Railway нажмите **New Project** и создайте пустой проект.
+2. Нажмите **+ New** → **Database** → **PostgreSQL**.
+3. Дождитесь статуса `Online` у PostgreSQL.
 
-### Как применить SQL в Railway
+### 3. Подключите бота
 
-Откройте PostgreSQL в Railway и выполните содержимое файла `sql/001_init.sql`.
+1. Нажмите **+ New** → **GitHub Repo**.
+2. Выберите репозиторий с ботом и нужную ветку.
+3. Railway обнаружит `Dockerfile` в корне автоматически.
 
-После этого бот сможет работать постоянно как фоновый сервис.
+### 4. Добавьте переменные
+
+Откройте сервис бота → **Variables** и добавьте:
+
+```dotenv
+BOT_TOKEN=токен_из_BotFather
+DATABASE_URL=${{Postgres.DATABASE_URL}}
+CHANNEL_ID=-1001234567890
+CHANNEL_LINK=https://t.me/ссылка_на_канал
+LOG_LEVEL=INFO
+```
+
+Если сервис базы называется не `Postgres`, выберите её `DATABASE_URL` через меню автодополнения Railway. `TELEGRAM_PROXY_URL` на Railway добавлять не нужно, если Telegram доступен напрямую.
+
+### 5. Запустите и проверьте
+
+1. Нажмите **Deploy** для применения переменных.
+2. В **Deployments** → **View Logs** дождитесь строк `Bot started successfully` и `Start polling`.
+3. Проверьте обе пригласительные ссылки Telegram.
+
+Для бота должен работать ровно один экземпляр сервиса. Не включайте Serverless и не создавайте публичный домен: polling-процесс должен быть запущен постоянно.
 
 ## Важные настройки Telegram
 
@@ -150,6 +154,7 @@ python -m src.main
 - для join requests у бота должно быть право одобрять заявки
 - бот должен получать `chat_member` и `chat_join_request`
 - если пользователь никогда не писал боту, обычная подписка без join requests может не позволить отправить ему личное сообщение
+- если сеть не открывает `https://api.telegram.org`, можно задать `TELEGRAM_PROXY_URL`, например `socks5://127.0.0.1:1080`
 
 ## Где задаются тексты
 
@@ -159,15 +164,10 @@ python -m src.main
 
 Там находятся:
 
-- `RANDOM_MESSAGES` — 4 случайных сообщения
-- `FIXED_MESSAGE` — 1 фиксированное сообщение
+- `WELCOME_MESSAGE` — единственное приветственное сообщение
 
 ## Антидубли
 
 Используются поля:
 
 - `welcome_sent_at`
-- `last_random_sent_at`
-- `last_fixed_sent_at`
-
-Также scheduler использует PostgreSQL advisory lock, чтобы несколько инстансов не запустили один и тот же daily tick одновременно.

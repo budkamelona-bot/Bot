@@ -37,12 +37,10 @@ def build_start_router(subscription_service: SubscriptionService) -> Router:
 
         await message.answer(
             "Готово ✅\n"
-            "Ежедневные уведомления активированы.\n"
-            "Теперь я буду присылать:\n"
-            "1) одно случайное сообщение из 4\n"
-            "2) затем одно фиксированное сообщение"
+            "Подписка подтверждена.\n"
+            "Бот отправляет только одно приветственное сообщение после подтверждения подписки."
         )
 
-        logger.info("Notifications activated in private chat for user_id=%s", user.id)
+        logger.info("Subscription confirmed in private chat for user_id=%s", user.id)
 
     return router

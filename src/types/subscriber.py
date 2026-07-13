@@ -15,8 +15,7 @@ class Subscriber:
     subscribed_at: Optional[datetime]
     is_subscription_active: bool
     is_bot_chat_active: bool
+    welcome_source: Optional[str]
     welcome_sent_at: Optional[datetime]
-    last_random_sent_at: Optional[datetime]
-    last_fixed_sent_at: Optional[datetime]
     created_at: datetime
     updated_at: datetime
