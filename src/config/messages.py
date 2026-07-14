@@ -7,8 +7,8 @@ ASSETS_DIR = Path(__file__).resolve().parents[1] / "assets"
 SOURCE_TIKTOK = "tiktok"
 SOURCE_YOUTUBE = "youtube"
 
-TIKTOK_INVITE_LINK = "https://t.me/+QvKrFcrm3Ow0YjY6"
-YOUTUBE_INVITE_LINK = "https://t.me/+_wPQMCnnhrA1Y2Uy"
+TIKTOK_INVITE_LINK = "https://telegram.me/+QvKrFcrm3Ow0YjY6"
+YOUTUBE_INVITE_LINK = "https://telegram.me/+_wPQMCnnhrA1Y2Uy"
 UPCLICK_URL = "https://upclick.site/tzxlvrpmi"
 SPINTO_URL = "https://megaslotsmatch.com/l/6a4ec0d6dda4f5282f0d2cb2"
 
