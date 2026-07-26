@@ -13,7 +13,7 @@ RUN useradd --create-home --uid 10001 bot
 
 COPY --chown=bot:bot src ./src
 COPY --chown=bot:bot sql ./sql
-COPY --chown=bot:bot tiktok.jpg youtube.jpg ./
+COPY --chown=bot:bot tiktok.jpg youtube.jpg new.jpg ./
 
 USER bot
 
