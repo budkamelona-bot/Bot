@@ -7,7 +7,7 @@ ASSETS_DIR = Path(__file__).resolve().parents[1] / "assets"
 SOURCE_TIKTOK = "tiktok"
 SOURCE_YOUTUBE = "youtube"
 
-TIKTOK_INVITE_LINK = "https://telegram.me/+QvKrFcrm3Ow0YjY6"
+TIKTOK_INVITE_LINK = "https://t.me/+Dh7BGrFXon1hZGE6"
 YOUTUBE_INVITE_LINK = "https://telegram.me/+_wPQMCnnhrA1Y2Uy"
 UPCLICK_URL = "https://upclick.site/tzxlvrpmi"
 SPINTO_URL = "https://megaslotsmatch.com/l/6a4ec0d6dda4f5282f0d2cb2"
@@ -85,13 +85,13 @@ WELCOME_MESSAGES_BY_SOURCE = {
 }
 
 INVITE_HASH_TO_SOURCE = {
-    "QvKrFcrm3Ow0YjY6": SOURCE_TIKTOK,
+    "Dh7BGrFXon1hZGE6": SOURCE_TIKTOK,
     "_wPQMCnnhrA1Y2Uy": SOURCE_YOUTUBE,
 }
 
 INVITE_LINK_MARKERS = {
-    "+QvKrFcrm3Ow0YjY6": SOURCE_TIKTOK,
-    "QvKrFcrm": SOURCE_TIKTOK,
+    "+Dh7BGrFXon1hZGE6": SOURCE_TIKTOK,
+    "Dh7BGrFX": SOURCE_TIKTOK,
     "+_wPQMCnnhrA1Y2Uy": SOURCE_YOUTUBE,
     "_wPQMCnn": SOURCE_YOUTUBE,
 }
