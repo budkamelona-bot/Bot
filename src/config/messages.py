@@ -13,7 +13,7 @@ TIKTOK_NORM_INVITE_LINK = "https://t.me/+Dh7BGrFXon1hZGE6"
 YOUTUBE_INVITE_LINK = "https://telegram.me/+_wPQMCnnhrA1Y2Uy"
 UPCLICK_URL = "https://upclick.site/tzxlvrpmi"
 SPINTO_URL = "https://megaslotsmatch.com/l/6a4ec0d6dda4f5282f0d2cb2"
-NORM_URL = "https://gonormaff.com/?serial=61358616&creative_id=7675"
+NORM_URL = "https://joinnormaff.com/?serial=61358616&creative_id=7675"
 NORM_URL_HTML = NORM_URL.replace("&", "&amp;")
 
 TG_PURPLE_HEART = '<tg-emoji emoji-id="5402366352042252021">💜</tg-emoji>'
